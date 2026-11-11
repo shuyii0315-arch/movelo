@@ -262,7 +262,7 @@ const ST=i=>'st/k'+String(i).padStart(2,'0')+'.png';
 const IS_MOBILE=matchMedia('(pointer:coarse)').matches&&Math.min(screen.width,screen.height)<700;
 if(IS_MOBILE)document.body.classList.add('m-full','is-mobile');
 function fit(){const full=document.body.classList.contains('m-full');const d=$('#demo').getBoundingClientRect(),W=full?innerWidth:d.width,H=full?innerHeight:d.height;
- const mob=document.body.classList.contains('is-mobile');const s=mob?Math.min(W/375,H/812):Math.min(full?1.6:1.1,(H-(full?72:56))/812,(W-40)/375);const st=$('#stage');st.style.margin='0';
+ const mob=document.body.classList.contains('is-mobile');const s=mob?Math.min(W/375,H/812):Math.min(1.1,(H-(full?140:56))/812,(W-40)/375);const st=$('#stage');st.style.margin='0';
  st.style.left=((W-375*s)/2)+'px';st.style.top=(mob?Math.max(0,(H-812*s)/2):(H-812*s)/2)+'px';st.style.transform='scale('+s+')'}
 addEventListener('resize',fit);fit();
 // detections (photo 1179x1570, cover on 375x812)
