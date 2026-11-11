@@ -27,7 +27,7 @@ body{background:var(--bg);font-family:Geist,system-ui,sans-serif;color:var(--ink
 .sp{display:grid;grid-template-columns:1fr 1fr;gap:48px;margin-top:20px;align-items:start}.sp p{font-size:15px;line-height:1.6;max-width:420px;padding-top:16px;color:#1A1A1A;margin:0;transition:opacity .25s}
 .sp .rows{display:grid;grid-template-columns:84px 1fr;gap:12px 16px;padding:20px 22px;border-radius:14px;background:#F7F7F7;font:400 12.5px/1.4 'Geist Mono',ui-monospace,monospace;color:#55534F;white-space:nowrap}
 .sp .rows b{font-weight:400;color:#1A1A1A}.sp .rows span{overflow:hidden;text-overflow:ellipsis}.sp .rows u{text-decoration:none;color:#E2723B}
-@media (max-width:760px){.sp{grid-template-columns:1fr}.uses em{display:none}}
+@media (max-width:760px){.sp{grid-template-columns:1fr;gap:20px}.uses em{display:none}body{padding:0 16px 96px}.pg-top{height:52px}.demo{height:min(640px,calc(100svh - 120px));min-height:520px;border-radius:18px}.dctl{top:12px}.dctl.l{left:12px}.dctl.r{right:12px}.dctl span{display:none}.dctl.l button{padding:0 9px}.desc{font-size:14px}.uses{flex-wrap:wrap}.tabs{display:flex;overflow-x:auto;max-width:100%;scrollbar-width:none}.tabs button{flex:none;padding:0 10px;font-size:12px}.sp p{padding-top:0;max-width:none}.sp .rows{grid-template-columns:72px 1fr;white-space:normal;padding:16px 18px}.acts .gh{padding:0 11px}}
 body.m-full{max-width:none;padding:0;overflow:hidden;height:100%}body.m-full .pg-top,body.m-full .info,body.is-mobile .dctl{display:none}
 body.m-full .demo{position:fixed;inset:0;height:auto;min-height:0;border-radius:0;box-shadow:none}body.is-mobile .demo{background:#fff}
 
@@ -260,11 +260,11 @@ const ITEMS=[
 const ST=i=>'st/k'+String(i).padStart(2,'0')+'.png';
 // scale stage to viewport
 const IS_MOBILE=matchMedia('(pointer:coarse)').matches&&Math.min(screen.width,screen.height)<700;
-if(IS_MOBILE)document.body.classList.add('m-full','is-mobile');
-let PH=812,HT=400;function setPH(){if(!IS_MOBILE)return;PH=Math.round(Math.max(600,Math.min(900,innerHeight*375/innerWidth)));HT=Math.round(PH*.49);const r=document.documentElement.style;r.setProperty('--ph',PH+'px');r.setProperty('--ht',HT+'px')}setPH();
+if(IS_MOBILE)document.body.classList.add('touch');
+let PH=812,HT=400;function setPH(){if(!document.body.classList.contains('is-mobile'))return;PH=Math.round(Math.max(600,Math.min(900,innerHeight*375/innerWidth)));HT=Math.round(PH*.49);const r=document.documentElement.style;r.setProperty('--ph',PH+'px');r.setProperty('--ht',HT+'px')}setPH();
 function fit(){const full=document.body.classList.contains('m-full');const d=$('#demo').getBoundingClientRect(),W=full?innerWidth:d.width,H=full?innerHeight:d.height;
- const mob=document.body.classList.contains('is-mobile');if(mob)setPH();const s=mob?W/375:Math.min(1.1,(H-(full?140:56))/812,(W-40)/375);const st=$('#stage');st.style.margin='0';
- st.style.left=((W-375*s)/2)+'px';st.style.top=(mob?0:(H-812*s)/2)+'px';st.style.transform='scale('+s+')'}
+ const mob=document.body.classList.contains('is-mobile');if(mob)setPH();const s=mob?W/375:Math.min(1.1,(H-(full?(W<600?110:140):(W<600?88:56)))/812,(W-(W<600?24:40))/375);const st=$('#stage');st.style.margin='0';
+ st.style.left=((W-375*s)/2)+'px';st.style.top=(mob?0:(H-812*s)/2+(W<600?14:0))+'px';st.style.transform='scale('+s+')'}
 addEventListener('resize',fit);fit();
 // detections (photo 1179x1570, cover on 375x812)
 const K=PH/1570,OX=(1179*K-375)/2;const P=(x,y)=>[x*K-OX,y*K];
