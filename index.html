@@ -28,9 +28,9 @@ body{background:var(--bg);font-family:Geist,system-ui,sans-serif;color:var(--ink
 .sp .rows{display:grid;grid-template-columns:84px 1fr;gap:12px 16px;padding:20px 22px;border-radius:14px;background:#F7F7F7;font:400 12.5px/1.4 'Geist Mono',ui-monospace,monospace;color:#55534F;white-space:nowrap}
 .sp .rows b{font-weight:400;color:#1A1A1A}.sp .rows span{overflow:hidden;text-overflow:ellipsis}.sp .rows u{text-decoration:none;color:#E2723B}
 @media (max-width:760px){.sp{grid-template-columns:1fr}.uses em{display:none}}
-body.m-full{max-width:none;padding:0;overflow:hidden;height:100%}body.m-full .pg-top,body.m-full .info,body.m-full .dctl{display:none}
-body.m-full .demo{position:fixed;inset:0;height:auto;min-height:0;border-radius:0;background:#fff;box-shadow:none}
-body.m-full:not(.is-mobile) #close{display:inline-flex}
+body.m-full{max-width:none;padding:0;overflow:hidden;height:100%}body.m-full .pg-top,body.m-full .info,body.is-mobile .dctl{display:none}
+body.m-full .demo{position:fixed;inset:0;height:auto;min-height:0;border-radius:0;box-shadow:none}body.is-mobile .demo{background:#fff}
+
 body.m-full .demo .stage{transform-origin:0 0}
 .stage{width:375px;height:812px;transform-origin:center;flex:none}
 .phone{position:relative;width:375px;height:812px;border-radius:46px;overflow:hidden;background:#F3F2EF;box-shadow:0 30px 80px rgba(0,0,0,.18),0 0 0 10px #111,0 0 0 11px #333}
@@ -210,7 +210,7 @@ button:focus{outline:none}button:focus-visible{outline:2px solid rgba(26,26,26,.
 .trash .ball::after{content:'';position:absolute;inset:0;background:repeating-linear-gradient(37deg,transparent 0 3px,rgba(0,0,0,.25) 3.5px,transparent 4.5px),repeating-linear-gradient(-58deg,transparent 0 4px,rgba(0,0,0,.2) 4.5px,transparent 5.5px),radial-gradient(circle at 38% 32%,rgba(255,255,255,.45),rgba(0,0,0,.35) 80%);mix-blend-mode:multiply}
 .trash .ball{background-color:#EEE9E0}
 body.m-full{justify-content:flex-start}
-body.m-full .phone{border-radius:0;box-shadow:none}
+body.is-mobile .phone{border-radius:0;box-shadow:none}
 body.is-mobile .ctrl{display:none}
 
 body.m-full .stage{transform-origin:top center}
@@ -262,8 +262,8 @@ const ST=i=>'st/k'+String(i).padStart(2,'0')+'.png';
 const IS_MOBILE=matchMedia('(pointer:coarse)').matches&&Math.min(screen.width,screen.height)<700;
 if(IS_MOBILE)document.body.classList.add('m-full','is-mobile');
 function fit(){const full=document.body.classList.contains('m-full');const d=$('#demo').getBoundingClientRect(),W=full?innerWidth:d.width,H=full?innerHeight:d.height;
- const s=full?Math.min(W/375,H/812):Math.min(1.1,(H-56)/812,(W-40)/375);const st=$('#stage');st.style.margin='0';
- st.style.left=((W-375*s)/2)+'px';st.style.top=(full?Math.max(0,(H-812*s)/2):(H-812*s)/2)+'px';st.style.transform='scale('+s+')'}
+ const mob=document.body.classList.contains('is-mobile');const s=mob?Math.min(W/375,H/812):Math.min(full?1.6:1.1,(H-(full?72:56))/812,(W-40)/375);const st=$('#stage');st.style.margin='0';
+ st.style.left=((W-375*s)/2)+'px';st.style.top=(mob?Math.max(0,(H-812*s)/2):(H-812*s)/2)+'px';st.style.transform='scale('+s+')'}
 addEventListener('resize',fit);fit();
 // detections (photo 1179x1570, cover on 375x812)
 const K=812/1570,OX=(1179*K-375)/2;const P=(x,y)=>[x*K-OX,y*K];
@@ -432,8 +432,8 @@ function removeBall(){const b=balls.pop();if(b)b.remove()}
   sh.classList.toggle('full',toFull);sh.classList.toggle('half',!toFull);[...grid.children].forEach(t=>t.classList.add('on'))};
  sh.addEventListener('pointerup',end);sh.addEventListener('pointercancel',end);
 })();
-const setView=m=>{document.body.classList.toggle('m-full',m);fit()};
-$('#expand').onclick=()=>setView(true);
+const setView=m=>{document.body.classList.toggle('m-full',m);const e=$('#expand');if(e&&typeof EXI!=='undefined'){e.innerHTML=m?MNI:EXI;e.title=m?'Exit full screen':'Full screen'}fit()};
+const EXI=$('#expand').innerHTML,MNI='<svg viewBox="0 0 24 24"><path d="M4 14h6v6M20 10h-6V4M14 10l7-7M3 21l7-7"/></svg>';$('#expand').onclick=()=>setView(!document.body.classList.contains('m-full'));
 const SHB=$('#share'),SH0=SHB.innerHTML,SH1='<svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg><span>Link copied</span>';
 function morph(btn,html){const w0=btn.getBoundingClientRect().width;btn.style.width='';const old=btn.innerHTML;btn.innerHTML=html;const w1=btn.getBoundingClientRect().width;
  btn.style.boxSizing='border-box';btn.style.width=w0+'px';btn.style.overflow='hidden';btn.style.whiteSpace='nowrap';btn.style.justifyContent='flex-end';
