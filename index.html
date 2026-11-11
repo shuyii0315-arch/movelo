@@ -435,7 +435,7 @@ const setView=m=>{document.body.classList.toggle('m-full',m);fit()};
 $('#expand').onclick=()=>setView(true);
 const SHB=$('#share'),SH0=SHB.innerHTML,SH1='<svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg><span>Link copied</span>';
 function morph(btn,html){const w0=btn.getBoundingClientRect().width;btn.style.width='';const old=btn.innerHTML;btn.innerHTML=html;const w1=btn.getBoundingClientRect().width;
- btn.style.width=w0+'px';btn.style.overflow='hidden';btn.style.whiteSpace='nowrap';btn.style.justifyContent='flex-end';
+ btn.style.boxSizing='border-box';btn.style.width=w0+'px';btn.style.overflow='hidden';btn.style.whiteSpace='nowrap';btn.style.justifyContent='flex-end';
  btn.animate([{width:w0+'px'},{width:w1+'px'}],{duration:420,easing:'cubic-bezier(.22,1,.36,1)'}).onfinish=()=>{btn.style.width=''};btn.style.width=w1+'px';
  [...btn.children].forEach((c,i)=>c.animate([{opacity:0,transform:'translateX(8px)',filter:'blur(2px)'},{opacity:1,transform:'none',filter:'blur(0)'}],{duration:360,delay:60+i*40,easing:'cubic-bezier(.22,1,.36,1)',fill:'backwards'}))}
 SHB.onclick=async()=>{const u=location.href.split('#')[0];try{if(navigator.share&&matchMedia('(pointer:coarse)').matches){await navigator.share({title:'Movelo',url:u});return}await navigator.clipboard.writeText(u)}catch(_){}
